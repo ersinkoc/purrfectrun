@@ -108,6 +108,10 @@ export const tr = {
   livesOver: 'Patiler yoruldu. Bir tur daha?',
   sceneFallback: '3D oyun sahnesi. WebGL2 desteği gerekir.',
   language: 'Dil',
+  chooseCat: 'Yol arkadaşını seç',
+  catProfiles: 'Kedi profilleri',
+  catHint: 'Dört farklı pati, aynı macera.',
+  catLocked: 'Kedini sonraki turda değiştirebilirsin.',
 };
 export type Messages = { [K in keyof typeof tr]: string };
 export const en: Messages = {
@@ -218,6 +222,10 @@ export const en: Messages = {
   livesOver: 'Tired paws. Fancy another run?',
   sceneFallback: '3D game scene. WebGL2 support is required.',
   language: 'Language',
+  chooseCat: 'Choose your companion',
+  catProfiles: 'Cat profiles',
+  catHint: 'Four different paws, one adventure.',
+  catLocked: 'You can switch cats on your next run.',
 };
 export const messages: Record<Language, Messages> = { tr, en };
 export function parseLanguage(value: string | null): Language {

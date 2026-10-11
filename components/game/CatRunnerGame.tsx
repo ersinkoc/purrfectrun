@@ -28,6 +28,14 @@ import {
 } from 'lucide-react';
 import { RunnerEngine, type Mode } from '@/lib/engine';
 import { loadRecords, saveRecords } from '@/lib/storage';
+import CatSelector from './CatSelector';
+import {
+  CAT_PROFILES,
+  getCatProfile,
+  loadCatProfile,
+  saveCatProfile,
+  type CatProfileId,
+} from '@/lib/cat-profiles';
 const GameScene = dynamic(() => import('./GameScene'), { ssr: false });
 import { messages, loadLanguage, saveLanguage, type Language, type Messages } from '@/lib/i18n';
 class SceneBoundary extends Component<
@@ -54,6 +62,10 @@ class SceneBoundary extends Component<
   }
 }
 export default function CatRunnerGame() {
+  const [catProfile, setCatProfile] = useState(CAT_PROFILES[0]);
+  useEffect(() => {
+    setCatProfile(loadCatProfile());
+  }, []);
   const [language, setLanguage] = useState<Language>('tr');
   const [languageLoaded, setLanguageLoaded] = useState(false);
   const t = messages[language];
@@ -220,6 +232,11 @@ export default function CatRunnerGame() {
   const theme = (state.level - 1) % 3;
   const playing = state.status === 'running';
   const locked = playing || state.status === 'paused';
+  const selectCat = (id: CatProfileId) => {
+    if (engine.status === 'running' || engine.status === 'paused') return;
+    setCatProfile(getCatProfile(id));
+    saveCatProfile(id);
+  };
   return (
     <main className="app-shell">
       <header className="site-header">
@@ -283,6 +300,13 @@ export default function CatRunnerGame() {
           </span>
         </div>
       </section>
+      <CatSelector
+        selected={catProfile.id}
+        language={language}
+        locked={locked}
+        onSelect={selectCat}
+        text={t}
+      />
       <div className="game-layout">
         <section
           className={`game-stage theme-${theme}`}
@@ -316,6 +340,7 @@ export default function CatRunnerGame() {
             <SceneBoundary text={t}>
               <GameScene
                 fallbackText={t.sceneFallback}
+                catProfile={catProfile}
                 engine={engine}
                 onUpdate={sync}
                 onReady={sceneReady}

@@ -77,6 +77,12 @@ The **TR / EN** buttons at the top right switch between Turkish and English. The
 
 The preference is stored under `purrfect-run:language:v1`. Turkish is the default; if storage is blocked, the selection still works for the session. Extend the dictionaries in `lib/i18n.ts` to add languages; TypeScript checks for missing translation keys.
 
+### Cat profiles
+
+Choose a companion above the game: **Marmalade** (ginger tabby), **Olive** (tuxedo), **Mocha** (Siamese), or **Patches** (calico). Each has its own coat pattern, eye color, paws, and collar, built from the same procedural geometry. All profiles share the same gameplay rules.
+
+Choose before starting or after game over; selection is locked while running or paused. Your choice is restored from `purrfect-run:cat:v1` after a reload. Invalid IDs safely select Marmalade, and blocked storage keeps your choice available for the session. Profile names and descriptions follow the selected UI language. Definitions are in `lib/cat-profiles.ts`; the selector is in `components/game/CatSelector.tsx`.
+
 ### GitHub Pages deployment
 
 Live site: [purrfectrun.oxog.dev](https://purrfectrun.oxog.dev).
@@ -169,6 +175,12 @@ Kamera ve fizik frame rate'den bağımsızdır. Uzun render gecikmeleri 100 ms i
 Sağ üstteki **TR / EN** düğmeleri Türkçe ve İngilizce arasında geçiş yapar. HUD, başlangıç/duraklama/sonuç ekranları, rehber, sahne ve erişilebilirlik etiketleri birlikte çevrilir; sayının binlik ayıracı da seçilen dile uyar. Dil değişikliği mevcut turu ve skor kayıtlarını sıfırlamaz.
 
 Tercih `purrfect-run:language:v1` anahtarında saklanır. Varsayılan dil Türkçedir; depolama engelliyse tercih oturum boyunca çalışır. Yeni diller `lib/i18n.ts` sözlüğüne eklenebilir; TypeScript eksik çeviri anahtarlarını kontrol eder.
+
+### Kedi profilleri
+
+Oyunun üstünden yol arkadaşını seç: **Mırmır** (turuncu tekir), **Zeytin** (smokin), **Moka** (Siyam) veya **Benek** (üç renkli). Her profil aynı procedural geometrilerle farklı kürk deseni, göz rengi, pati ve tasmaya sahiptir. Oyun kuralları tüm profillerde aynıdır.
+
+Seçim tur başlamadan veya oyun bittikten sonra yapılır; koşarken ve duraklatılmışken kilitlidir. Tercihin `purrfect-run:cat:v1` üzerinden sayfa yenilenince geri yüklenir. Geçersiz kimlikler güvenle Mırmır’a döner; depolama engelliyse seçim oturum boyunca çalışır. Profil adları ve açıklamaları arayüz dilini takip eder. Tanımlar `lib/cat-profiles.ts`, seçim bileşeni `components/game/CatSelector.tsx` içindedir.
 
 ### GitHub Pages yayını
 

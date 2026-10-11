@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { RunnerEngine } from '@/lib/engine';
+import type { CatProfile } from '@/lib/cat-profiles';
 
 type PartProps = {
   position?: [number, number, number];
@@ -23,7 +24,8 @@ export function Part({ position, scale, rotation, color, shape = 'sphere', args 
     </mesh>
   );
 }
-export function Cat({ engine }: { engine: RunnerEngine }) {
+export function Cat({ engine, profile }: { engine: RunnerEngine; profile: CatProfile }) {
+  const coat = profile.colors;
   const cat = useRef<THREE.Group>(null);
   const body = useRef<THREE.Group>(null);
   const tail = useRef<THREE.Group>(null);
@@ -69,16 +71,16 @@ export function Cat({ engine }: { engine: RunnerEngine }) {
   return (
     <group ref={cat}>
       <group ref={body}>
-        <Part position={[0, 0.78, 0.08]} scale={[0.43, 0.43, 0.68]} color="#e6a268" />
-        <Part position={[0, 0.82, -0.36]} scale={[0.37, 0.35, 0.35]} color="#ffddb5" />
-        <Part position={[0, 1.18, -0.43]} scale={[0.48, 0.4, 0.39]} color="#edaf75" />
-        <Part position={[0, 1.03, -0.72]} scale={[0.28, 0.18, 0.14]} color="#fff0d9" />
+        <Part position={[0, 0.78, 0.08]} scale={[0.43, 0.43, 0.68]} color={coat.fur} />
+        <Part position={[0, 0.82, -0.36]} scale={[0.37, 0.35, 0.35]} color={coat.chest} />
+        <Part position={[0, 1.18, -0.43]} scale={[0.48, 0.4, 0.39]} color={coat.head} />
+        <Part position={[0, 1.03, -0.72]} scale={[0.28, 0.18, 0.14]} color={coat.muzzle} />
         {[-1, 1].map((side) => (
           <group key={side}>
             <Part
               position={[side * 0.31, 1.55, -0.4]}
               rotation={[0, 0, side * -0.18]}
-              color="#dc925c"
+              color={coat.ear}
               shape="cone"
               args={[0.25, 0.43, 4]}
             />
@@ -92,7 +94,7 @@ export function Cat({ engine }: { engine: RunnerEngine }) {
             <Part
               position={[side * 0.19, 1.24, -0.775]}
               scale={[0.08, 0.105, 0.045]}
-              color="#32443e"
+              color={coat.eyes}
             />
             <Part
               position={[side * 0.21, 1.28, -0.812]}
@@ -112,18 +114,30 @@ export function Cat({ engine }: { engine: RunnerEngine }) {
           </group>
         ))}
         <Part position={[0, 1.1, -0.864]} scale={[0.065, 0.047, 0.04]} color="#bd746e" />
-        {[0, 1, 2].map((i) => (
-          <Part
-            key={i}
-            shape="box"
-            args={[0.12, 0.025, 0.45]}
-            position={[-0.17 + i * 0.17, 1.53, -0.39]}
-            color="#c28755"
-          />
-        ))}
+        {profile.pattern === 'tabby' &&
+          [0, 1, 2].map((i) => (
+            <Part
+              key={i}
+              shape="box"
+              args={[0.12, 0.025, 0.45]}
+              position={[-0.17 + i * 0.17, 1.53, -0.39]}
+              color={coat.markings}
+            />
+          ))}
+        {profile.pattern === 'tuxedo' && (
+          <Part position={[0, 1.35, -0.78]} scale={[0.1, 0.18, 0.045]} color={coat.muzzle} />
+        )}
+        {profile.pattern === 'calico' && (
+          <group>
+            <Part position={[0.3, 0.87, 0.24]} scale={[0.2, 0.27, 0.37]} color={coat.markings} />
+            <Part position={[-0.3, 0.9, -0.12]} scale={[0.2, 0.25, 0.3]} color="#424b50" />
+            <Part position={[0.3, 1.29, -0.4]} scale={[0.2, 0.23, 0.31]} color={coat.markings} />
+            <Part position={[-0.3, 1.29, -0.4]} scale={[0.2, 0.23, 0.31]} color="#424b50" />
+          </group>
+        )}
         <mesh position={[0, 0.98, -0.32]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.35, 0.047, 6, 20]} />
-          <meshToonMaterial color="#629d88" />
+          <meshToonMaterial color={coat.collar} />
         </mesh>
         <Part position={[0, 0.89, -0.7]} scale={[0.058, 0.07, 0.035]} color="#f7d372" />
         <group ref={tail} position={[0, 0.85, 0.57]} rotation={[-0.3, 0, 0]}>
@@ -131,21 +145,21 @@ export function Cat({ engine }: { engine: RunnerEngine }) {
             position={[0, 0.35, 0.12]}
             rotation={[0.3, 0, 0]}
             scale={[0.115, 0.48, 0.115]}
-            color="#e6a268"
+            color={coat.fur}
           />
           <Part
             position={[0, 0.75, 0.27]}
             rotation={[0.6, 0, 0]}
             scale={[0.12, 0.24, 0.12]}
-            color="#fff0d9"
+            color={coat.tailTip}
           />
         </group>
         <group ref={legs}>
           {[-1, 1].flatMap((side) =>
             [-1, 1].map((front) => (
               <group key={`${side}-${front}`} position={[side * 0.27, 0.55, front * 0.37]}>
-                <Part position={[0, -0.2, 0]} scale={[0.115, 0.28, 0.115]} color="#e6a268" />
-                <Part position={[0, -0.43, -0.04]} scale={[0.16, 0.1, 0.2]} color="#fff0d9" />
+                <Part position={[0, -0.2, 0]} scale={[0.115, 0.28, 0.115]} color={coat.fur} />
+                <Part position={[0, -0.43, -0.04]} scale={[0.16, 0.1, 0.2]} color={coat.paws} />
               </group>
             )),
           )}

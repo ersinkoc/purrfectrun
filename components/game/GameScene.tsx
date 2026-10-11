@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
 import { Cat, MilkModel, Part, PawModel } from './Models';
+import type { CatProfile } from '@/lib/cat-profiles';
 import { LANES, THEMES, isPickup, type Entity, type RunnerEngine } from '@/lib/engine';
 
 function Obstacle({ kind }: { kind: string }) {
@@ -364,11 +365,13 @@ export default function GameScene({
   onUpdate,
   onReady,
   fallbackText,
+  catProfile,
 }: {
   engine: RunnerEngine;
   onUpdate: () => void;
   onReady: () => void;
   fallbackText: string;
+  catProfile: CatProfile;
 }) {
   return (
     <Canvas
@@ -406,7 +409,7 @@ export default function GameScene({
       {engine.entities.map((e) => (
         <RoadEntity key={e.id} engine={engine} id={e.id} />
       ))}
-      <Cat engine={engine} />
+      <Cat engine={engine} profile={catProfile} />
       <ContactShadows
         position={[0, 0.015, 0]}
         opacity={0.24}
