@@ -1463,3 +1463,354 @@ h1 span {
     display: grid;
   }
 }
+/* Character moments: only transform and opacity animate, with reduced-motion support. */
+.modal-scrim {
+  animation: modal-scrim-in 0.22s ease-out both;
+  grid-template-rows: minmax(0, 1fr);
+  padding: 16px;
+  overflow-y: auto;
+}
+.character-modal {
+  animation: character-modal-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+.character-modal .eyebrow {
+  font-size: 7px;
+}
+.character-modal h2 {
+  margin: 10px 0 7px;
+  font-size: 24px;
+}
+.character-modal .end-score {
+  font-size: 35px;
+  line-height: 1.2;
+}
+.character-modal .end-stats {
+  margin: 10px 0;
+}
+.character-modal .primary-button {
+  margin-top: 14px;
+}
+.character-modal .modal-hint {
+  margin-top: 12px;
+}
+.cat-moment {
+  margin: -10px auto 15px;
+}
+.cat-portrait {
+  width: 160px;
+  height: 158px;
+  margin: 0 auto;
+  position: relative;
+}
+.portrait-halo {
+  position: absolute;
+  inset: 14px 9px 6px;
+  background: #eaf1df;
+  border-radius: 50%;
+  animation: portrait-halo-pulse 4s ease-in-out infinite;
+}
+.mood-sad .portrait-halo {
+  background: #f3e6dc;
+}
+.mood-hungry .portrait-halo {
+  background: #f4edd7;
+}
+.portrait-body {
+  position: absolute;
+  inset: 0;
+  width: 160px;
+  height: 160px;
+}
+.portrait-head {
+  position: absolute;
+  top: 8px;
+  left: 26px;
+  width: 108px;
+  height: 108px;
+  transform-origin: 50% 90%;
+  animation: portrait-head-nod 4s ease-in-out infinite;
+}
+.cat-portrait .cat-avatar {
+  width: 108px;
+  height: 108px;
+}
+.portrait-breath {
+  transform-origin: 80px 145px;
+  animation: portrait-breathe 3.4s ease-in-out infinite;
+}
+.portrait-tail {
+  transform-origin: 110px 128px;
+  animation: portrait-tail-sway 3.6s ease-in-out infinite;
+}
+.portrait-paw {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: portrait-paw-knead 3.4s ease-in-out infinite;
+}
+.paw-right {
+  animation-delay: 1.7s;
+}
+.cat-avatar-animated .avatar-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: portrait-blink 5s infinite;
+}
+.avatar-tear {
+  animation: portrait-tear 2.8s ease-in-out infinite;
+}
+.portrait-bandage {
+  position: absolute;
+  top: 29px;
+  left: 45px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 12px;
+  border-radius: 4px;
+  background: #eec8a5;
+  color: #c18d71;
+  font-size: 10px;
+  transform: rotate(-16deg);
+  box-shadow: 0 1px 1px #53402b12;
+}
+.portrait-symbol {
+  position: absolute;
+  right: 0;
+  top: 31px;
+  color: #8da28b;
+  animation: portrait-symbol-float 3s ease-in-out infinite;
+}
+.sleepy-symbol {
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: 2px;
+  transform: rotate(10deg);
+}
+.sleepy-symbol > span {
+  display: inline-block;
+  font-size: 13px;
+  transform: translateY(-8px);
+}
+.sleepy-symbol small {
+  display: inline-block;
+  font-size: 9px;
+  transform: translateY(-15px);
+}
+.heart-symbol {
+  color: #d69898;
+  animation: portrait-heart-rise 3s ease-out infinite;
+}
+.milk-symbol {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 13px;
+  background: #fff9e5;
+  color: #82a68c;
+  transform: rotate(12deg);
+}
+.mood-hungry .portrait-head {
+  animation-duration: 2.7s;
+}
+.mood-sad .portrait-tail {
+  animation-duration: 5s;
+}
+.portrait-record {
+  position: absolute;
+  left: 3px;
+  top: 40px;
+  color: #c6a158;
+  animation: portrait-symbol-float 2.5s ease-in-out infinite reverse;
+}
+.cat-moment-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 2px 0 8px;
+}
+.cat-moment-name > span {
+  display: block;
+  margin-top: 4px;
+  font-size: 8px;
+  font-weight: 500;
+  color: #8b9e80;
+}
+.character-modal .cat-moment-quote {
+  margin: 0;
+  font-size: 10px;
+  font-style: italic;
+  line-height: 1.8;
+  color: #819278;
+  padding: 0 3px;
+}
+.character-modal .primary-button {
+  animation: character-button-in 0.35s 0.12s ease-out both;
+}
+.cat-options button:not(:disabled):hover .cat-avatar {
+  transform: rotate(-6deg) scale(1.08);
+}
+.cat-options .cat-avatar {
+  transition: transform 0.25s ease-out;
+}
+.new-record {
+  animation: portrait-symbol-float 2.6s ease-in-out infinite;
+}
+@keyframes modal-scrim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes character-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes character-button-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes portrait-halo-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+@keyframes portrait-breathe {
+  0%,
+  100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.025, 1.04);
+  }
+}
+@keyframes portrait-head-nod {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(3px) rotate(3deg);
+  }
+}
+@keyframes portrait-tail-sway {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+@keyframes portrait-paw-knead {
+  0%,
+  40%,
+  100% {
+    transform: translateY(0);
+  }
+  55% {
+    transform: translateY(-2px) scaleY(1.07);
+  }
+}
+@keyframes portrait-blink {
+  0%,
+  41%,
+  45%,
+  100% {
+    transform: scaleY(1);
+  }
+  43% {
+    transform: scaleY(0.08);
+  }
+}
+@keyframes portrait-tear {
+  0%,
+  20% {
+    opacity: 0;
+    transform: translateY(-1px);
+  }
+  35% {
+    opacity: 1;
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+}
+@keyframes portrait-symbol-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(6deg);
+  }
+}
+@keyframes portrait-heart-rise {
+  0% {
+    transform: translateY(8px) scale(0.8);
+    opacity: 0;
+  }
+  20%,
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-12px) scale(1.05);
+    opacity: 0;
+  }
+}
+@media (max-width: 520px) {
+  .character-modal {
+    padding: 20px;
+  }
+  .cat-portrait {
+    width: 160px;
+    height: 150px;
+  }
+  .cat-moment {
+    margin-bottom: 12px;
+  }
+  .character-modal h2 {
+    font-size: 22px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal-scrim,
+  .character-modal,
+  .character-modal .primary-button,
+  .cat-moment *,
+  .new-record {
+    animation: none !important;
+  }
+  .cat-options .cat-avatar {
+    transition: none;
+  }
+  .cat-options button:not(:disabled):hover .cat-avatar {
+    transform: none;
+  }
+}

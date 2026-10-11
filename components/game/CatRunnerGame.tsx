@@ -9,7 +9,6 @@ import {
   ArrowUpRight,
   Check,
   ChevronRight,
-  Coffee,
   Fish,
   Flag,
   Gamepad2,
@@ -29,6 +28,7 @@ import {
 import { RunnerEngine, type Mode } from '@/lib/engine';
 import { loadRecords, saveRecords } from '@/lib/storage';
 import CatSelector from './CatSelector';
+import CatStatusPortrait from './CatStatusPortrait';
 import {
   CAT_PROFILES,
   getCatProfile,
@@ -90,6 +90,7 @@ export default function CatRunnerGame() {
   const lastStatus = useRef(engine.status);
   const gesture = useRef<{ x: number; y: number; id: number } | null>(null);
   const helpDialog = useRef<HTMLDivElement>(null);
+  const gameDialog = useRef<HTMLDivElement>(null);
   const sync = useCallback(() => {
     setState(engine.snapshot());
     const now = performance.now();
@@ -147,8 +148,8 @@ export default function CatRunnerGame() {
     const down = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
       if (target?.closest('input, select, textarea, a, [contenteditable="true"]') || help) return;
-      if (target?.closest('button') && engine.status !== 'running' && engine.status !== 'paused')
-        return;
+      // Keep native Space activation on focused buttons; P and R still control the game.
+      if (target?.closest('button') && e.code === 'Space') return;
       const key = e.code;
       if (
         ![
@@ -230,6 +231,16 @@ export default function CatRunnerGame() {
     };
   }, [help]);
   const theme = (state.level - 1) % 3;
+  useEffect(() => {
+    if (help || (state.status !== 'paused' && state.status !== 'over')) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const dialog = gameDialog.current;
+    dialog?.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
+    // This dialog covers the stage; language and sidebar controls stay reachable.
+    return () => {
+      previous?.focus({ preventScroll: true });
+    };
+  }, [state.status, help]);
   const playing = state.status === 'running';
   const locked = playing || state.status === 'paused';
   const selectCat = (id: CatProfileId) => {
@@ -457,12 +468,21 @@ export default function CatRunnerGame() {
           )}
           {state.status === 'paused' && (
             <div className="modal-scrim">
-              <div className="modal-card">
-                <span className="modal-icon">
-                  <Coffee size={30} />
-                </span>
+              <div
+                className="modal-card character-modal"
+                ref={gameDialog}
+                role="dialog"
+                aria-labelledby="pause-title"
+              >
+                <CatStatusPortrait
+                  profile={catProfile}
+                  language={language}
+                  status="paused"
+                  reason={state.reason}
+                  text={t}
+                />
                 <div className="eyebrow">{t.pauseTag}</div>
-                <h2>{t.pauseTitle}</h2>
+                <h2 id="pause-title">{t.pauseTitle}</h2>
                 <p>{t.pauseDescription}</p>
                 <button className="primary-button" onClick={pause}>
                   <Play size={17} fill="currentColor" /> {t.resume}{' '}
@@ -473,12 +493,22 @@ export default function CatRunnerGame() {
           )}
           {state.status === 'over' && (
             <div className="modal-scrim">
-              <div className="modal-card">
-                <span className="modal-icon">
-                  <PawPrint size={32} />
-                </span>
+              <div
+                className="modal-card character-modal"
+                ref={gameDialog}
+                role="dialog"
+                aria-labelledby="over-title"
+              >
+                <CatStatusPortrait
+                  profile={catProfile}
+                  language={language}
+                  status="over"
+                  reason={state.reason}
+                  text={t}
+                  record={state.score > recordToBeat.current}
+                />
                 <div className="eyebrow">{t.overTag}</div>
-                <h2>{t.overTitle}</h2>
+                <h2 id="over-title">{t.overTitle}</h2>
                 <p>{state.reason === 'energy' ? t.energyOver : t.livesOver}</p>
                 <div className="end-score">
                   {format(state.score)}

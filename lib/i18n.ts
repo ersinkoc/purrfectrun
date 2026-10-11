@@ -112,6 +112,9 @@ export const tr = {
   catProfiles: 'Kedi profilleri',
   catHint: 'Dört farklı pati, aynı macera.',
   catLocked: 'Kedini sonraki turda değiştirebilirsin.',
+  catResting: 'Patiler dinleniyor',
+  catComfort: 'Küçük bir teselli molası',
+  catHungry: 'Süt molası gerekli',
 };
 export type Messages = { [K in keyof typeof tr]: string };
 export const en: Messages = {
@@ -226,6 +229,9 @@ export const en: Messages = {
   catProfiles: 'Cat profiles',
   catHint: 'Four different paws, one adventure.',
   catLocked: 'You can switch cats on your next run.',
+  catResting: 'Paws at rest',
+  catComfort: 'A little comfort break',
+  catHungry: 'A milk break, please',
 };
 export const messages: Record<Language, Messages> = { tr, en };
 export function parseLanguage(value: string | null): Language {
