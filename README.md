@@ -66,3 +66,21 @@ Kamera ve fizik frame rate'den bağımsızdır. Uzun render gecikmeleri 100 ms i
 Sağ üstteki **TR / EN** düğmeleri Türkçe ve İngilizce arasında geçiş yapar. HUD, başlangıç/duraklama/sonuç ekranları, rehber, sahne ve erişilebilirlik etiketleri birlikte çevrilir; sayının binlik ayıracı da seçilen dile uyar. Dil değişikliği mevcut turu ve skor kayıtlarını sıfırlamaz.
 
 Tercih `purrfect-run:language:v1` anahtarında saklanır. Varsayılan dil Türkçedir; depolama engelliyse tercih oturum boyunca çalışır. Yeni diller `lib/i18n.ts` sözlüğüne eklenebilir; TypeScript eksik çeviri anahtarlarını kontrol eder.
+
+## GitHub Pages yayını
+
+Canlı adres: [purrfectrun.oxog.dev](https://purrfectrun.oxog.dev).
+
+`.github/workflows/pages.yml`, `main` dalına her push sonrası biçimlendirme, TypeScript ve oyun testlerini çalıştırır; Next.js statik çıktısını `out/` klasörüne üretip GitHub Pages’e yükler. Actions ekranındaki **Run workflow** düğmesiyle elle de çalıştırılabilir. Actions sürümleri doğrulanan release commit’lerine sabitlenmiştir.
+
+GitHub Pages kaynağı **GitHub Actions** olmalıdır. Özel alan adı `purrfectrun.oxog.dev`, DNS CNAME hedefi `ersinkoc.github.io` ve HTTPS etkin olacak şekilde ayarlanır. Alan adı dosyası `public/CNAME` üzerinden export’a kopyalanır. Özel alan adı kökünde çalıştığından `basePath` gerekmez.
+
+Yerelde aynı statik export’u üretmek için:
+
+```powershell
+$env:GITHUB_PAGES = 'true'
+bun run check
+Remove-Item Env:GITHUB_PAGES
+```
+
+`out/` herhangi bir statik HTTP sunucusuyla servis edilebilir. `GITHUB_PAGES` yalnızca statik build için kullanılır; normal `bun run dev`, `bun run build` ve `bun run start` Next.js sunucu modunda çalışmaya devam eder.
